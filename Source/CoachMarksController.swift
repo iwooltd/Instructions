@@ -382,7 +382,7 @@ public class CoachMarksController: UIViewController, OverlayViewDelegate {
 
     //MARK: - Public methods
     /// Start displaying the coach marks.
-    public func startOn(parentViewController: UIViewController) {
+    public func startOn(parentViewController: UIViewController, immediate: Bool = false) {
         guard let dataSource = self.dataSource else {
             print("Snap! You didn't setup any datasource, the coach mark manager won't do anything.")
             return
@@ -417,12 +417,24 @@ public class CoachMarksController: UIViewController, OverlayViewDelegate {
             updateSkipViewConstraints()
         }
 
-        UIView.animateWithDuration(self.overlayFadeAnimationDuration, animations: { () -> Void in
-            self.overlayView.alpha = 1.0
-            self.skipViewAsView?.alpha = 1.0
-        }, completion: { (finished: Bool) -> Void in
-            self.showNextCoachMark()
-        })
+        if (immediate == true){
+            UIView.animateWithDuration(self.overlayFadeAnimationDuration, animations: { () -> Void in
+                self.overlayView.alpha = 1.0
+                self.skipViewAsView?.alpha = 1.0
+                self.showNextCoachMark()
+                }, completion: { (finished: Bool) -> Void in
+            })
+        }
+        else
+        {
+            UIView.animateWithDuration(self.overlayFadeAnimationDuration, animations: { () -> Void in
+                self.overlayView.alpha = 1.0
+                self.skipViewAsView?.alpha = 1.0
+                }, completion: { (finished: Bool) -> Void in
+                    self.showNextCoachMark()
+            })
+        }
+        
     }
 
     /// Stop displaying the coach marks and perform some cleanup.
