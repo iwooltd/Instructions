@@ -96,7 +96,7 @@ internal class CoachMarkDisplayManager {
         coachMarkView.alpha = 0.0
 
         // Animate the view entry
-        overlayView.showCutoutPathViewWithAnimationDuration(coachMark.animationDuration)
+        overlayView.showCutoutPathViewWithAnimationDuration(0)
 
         UIView.animateWithDuration(coachMark.animationDuration, animations: { () -> Void in
             coachMarkView.alpha = 1.0
