@@ -124,20 +124,23 @@ internal class OverlayView: UIView {
     ///
     /// - Parameter duration: duration of the animation
     func hideCutoutPathViewWithAnimationDuration(duration: NSTimeInterval) {
-        CATransaction.begin()
-
-        self.fullMaskLayer.opacity = 1.0
-
-        let animation = CABasicAnimation(keyPath: "opacity")
-        animation.fromValue = 0.0
-        animation.toValue = 1.0
-        animation.duration = duration
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        animation.removedOnCompletion = true
-
-        self.fullMaskLayer.addAnimation(animation, forKey: "opacityAnimationFadeOut")
-
-        CATransaction.commit()
+        
+        self.fullMaskLayer.opacity = 0.0
+        
+//        CATransaction.begin()
+//
+//        self.fullMaskLayer.opacity = 1.0
+//
+//        let animation = CABasicAnimation(keyPath: "opacity")
+//        animation.fromValue = 0.0
+//        animation.toValue = 1.0
+//        animation.duration = duration
+//        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+//        animation.removedOnCompletion = true
+//
+//        self.fullMaskLayer.addAnimation(animation, forKey: "opacityAnimationFadeOut")
+//
+//        CATransaction.commit()
     }
 
     /// Update the cutout path. Please note that the update won't perform any
