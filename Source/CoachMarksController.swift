@@ -434,11 +434,16 @@ public class CoachMarksController: UIViewController, OverlayViewDelegate {
         }
 
         UIView.animateWithDuration(self.overlayFadeAnimationDuration, animations: { () -> Void in
-            self.overlayView.alpha = 1.0
+            
             self.skipViewAsView?.alpha = 1.0
-        }, completion: { (finished: Bool) -> Void in
-            self.showNextCoachMark()
+            }, completion: { (finished: Bool) -> Void in
+                self.showNextCoachMark()
+                UIView.animateWithDuration(self.overlayFadeAnimationDuration, animations: { () -> Void in
+                    self.overlayView.alpha = 1.0
+                })
+                
         })
+        
     }
 
     /// Stop displaying the coach marks and perform some cleanup.
@@ -448,13 +453,13 @@ public class CoachMarksController: UIViewController, OverlayViewDelegate {
             self.skipViewAsView?.alpha = 0.0
             self.currentCoachMarkView?.alpha = 0.0
         }, completion: {(finished: Bool) -> Void in
+            self.currentCoachMarkView?.removeFromSuperview()
             self.skipView?.skipControl?.removeTarget(self, action: "skipCoachMarksTour:", forControlEvents: .TouchUpInside)
             self.reset()
             self.detachFromViewController()
 
             // Calling the delegate, maybe the user wants to do something?
             self.delegate?.didFinishShowingFromCoachMarksController(self)
-
         })
     }
 
@@ -551,7 +556,7 @@ public class CoachMarksController: UIViewController, OverlayViewDelegate {
             self.delegate?.coachMarksController(self, coachMarkWillDisappear: self.currentCoachMark!, forIndex: self.currentIndex - 1)
 
             if hidePrevious {
-                self.coachMarkDisplayManager.hideCoachMarkView(self.currentCoachMarkView, animationDuration: self.currentCoachMark!.animationDuration) {
+                self.coachMarkDisplayManager.hideCoachMarkView(self.currentCoachMarkView, animationDuration: self.currentCoachMark!.animationDuration, isLast: (self.currentIndex >= self.numberOfCoachMarks)) {
                     self.removeTargetFromCurrentCoachView()
 
                     if self.currentIndex < self.numberOfCoachMarks {

@@ -68,13 +68,18 @@ internal class CoachMarkDisplayManager {
     /// - Parameter coachMarkView: the coach mark to hide
     /// - Parameter animationDuration: the duration of the fade
     /// - Parameter completion: a block to execute after the coach mark was hidden
-    func hideCoachMarkView(coachMarkView: UIView?, animationDuration: NSTimeInterval, completion: (() -> Void)? = nil) {
-        overlayView.hideCutoutPathViewWithAnimationDuration(animationDuration)
+    func hideCoachMarkView(coachMarkView: UIView?, animationDuration: NSTimeInterval, isLast:Bool = false, completion: (() -> Void)? = nil) {
+        
 
         UIView.animateWithDuration(animationDuration, animations: { () -> Void in
-            coachMarkView?.alpha = 0.0
+            if(isLast == false){
+                coachMarkView?.alpha = 0.0
+                self.overlayView.hideCutoutPathViewWithAnimationDuration(animationDuration)
+            }
         }, completion: {(finished: Bool) -> Void in
-            coachMarkView?.removeFromSuperview()
+            if(isLast == false){
+                coachMarkView?.removeFromSuperview()
+            }
             completion?()
         })
     }
