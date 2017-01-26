@@ -1,6 +1,6 @@
-// CoachMarkTests.swift
+// CoachMarkDisplayManagerTests.swift
 //
-// Copyright (c) 2015 Frédéric Maquin <fred@ephread.com>
+// Copyright (c) 2016 Frédéric Maquin <fred@ephread.com>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@ import XCTest
 class CoachMarkDisplayManagerTests: XCTestCase {
 
     let overlayView = OverlayView()
-    let instructionsTopView = UIView()
+    let instructionsRootView = UIView()
     let coachMarksController = CoachMarksController()
     var coachMarkDisplayManager: CoachMarkDisplayManager!
 
@@ -36,10 +36,12 @@ class CoachMarkDisplayManagerTests: XCTestCase {
         super.setUp()
 
         self.overlayView.frame = CGRect(x: 0, y: 0, width: 365, height: 667)
-        self.instructionsTopView.frame = CGRect(x: 0, y: 0, width: 365, height: 667)
+        self.instructionsRootView.frame = CGRect(x: 0, y: 0, width: 365, height: 667)
+
+        instructionsRootView.addSubview(overlayView)
 
         self.coachMarkDisplayManager =
-            CoachMarkDisplayManager(coachMarksController: coachMarksController, overlayView: self.overlayView, instructionsTopView: self.instructionsTopView)
+            CoachMarkDisplayManager(coachMarkLayoutHelper: CoachMarkLayoutHelper())
     }
 
     override func tearDown() {
@@ -48,26 +50,29 @@ class CoachMarkDisplayManagerTests: XCTestCase {
     }
 
     func testThatCoachMarkViewIsShown() {
-        let coachMarkView = CoachMarkView(bodyView: CoachMarkBodyDefaultView())
+        let coachMarkView = CoachMarkView(bodyView: CoachMarkBodyDefaultView(),
+                                          coachMarkInnerLayoutHelper: CoachMarkInnerLayoutHelper())
         var coachMark = CoachMark()
         coachMark.cutoutPath = UIBezierPath(rect: CGRect(x: 30, y: 30, width: 60, height: 30))
 
-        self.viewIsVisibleExpectation = self.expectationWithDescription("viewIsVisible")
+        self.viewIsVisibleExpectation = self.expectation(description: "viewIsVisible")
 
-        coachMark.computeOrientationInFrame(self.instructionsTopView.frame)
-        coachMark.computePointOfInterestInFrame()
+        coachMark.computeOrientation(inFrame: self.instructionsRootView.frame)
+        coachMark.computePointOfInterest()
 
-        self.coachMarkDisplayManager.displayCoachMarkView(coachMarkView, coachMark: coachMark) {
+        self.coachMarkDisplayManager.showNew(coachMarkView: coachMarkView, from: coachMark,
+                                             on: self.overlayView) {
             XCTAssertEqual(coachMarkView.alpha, 1.0)
-            XCTAssertEqual(coachMarkView.hidden, false)
+            XCTAssertEqual(coachMarkView.isHidden, false)
 
             self.viewIsVisibleExpectation?.fulfill()
         }
 
-        self.waitForExpectationsWithTimeout(5) { error in
+        self.waitForExpectations(timeout: 5) { error in
             if let error = error {
                 print("Error: \(error.localizedDescription)")
             }
         }
     }
+
 }
