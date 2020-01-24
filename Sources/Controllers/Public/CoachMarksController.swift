@@ -94,7 +94,7 @@ public extension CoachMarksController {
     /// Start displaying the coach marks.
     ///
     /// - Parameter parentViewController: View Controller to which attach self.
-    public func startOn(_ parentViewController: UIViewController) {
+    func startOn(_ parentViewController: UIViewController) {
         guard let dataSource = self.dataSource else {
             print("startOn: snap! you didn't setup any datasource, the" +
                   "coach mark manager won't do anything.")
@@ -119,7 +119,7 @@ public extension CoachMarksController {
     /// viewWillDisappear.
     ///
     /// - Parameter immediately: `true` to stop immediately, without animations.
-    public func stop(immediately: Bool = false) {
+    func stop(immediately: Bool = false) {
         if immediately {
             flow.stopFlow(immediately: true, userDidSkip: false, shouldCallDelegate: false)
         } else {
@@ -130,14 +130,14 @@ public extension CoachMarksController {
     /// Pause the display.
     /// This method is expected to be used by the delegate to
     /// stop the display, perform animation and resume display with `resume()`
-    @available(*, deprecated: 0.6.0, message: "Please use flow.pause() instead.")
+    @available(*, deprecated, message: "Please use flow.pause() instead.")
     func pause() {
         flow.pause()
     }
 
     /// Resume the display.
     /// If the display wasn't paused earlier, this method won't do anything.
-    @available(*, deprecated: 0.6.0, message: "Please use flow.resume() instead.")
+    @available(*, deprecated, message: "Please use flow.resume() instead.")
     func resume() {
         flow.resume()
     }

@@ -50,7 +50,7 @@ class CoachMarksControllerTests: XCTestCase, CoachMarksControllerDelegate {
         self.coachMarksController.startOn(self.parentController)
 
         let contains =
-            isCoachMarkViewControllerAttached(self.parentController.childViewControllers)
+            isCoachMarkViewControllerAttached(self.parentController.children)
 
         XCTAssertTrue(contains)
     }
@@ -89,7 +89,7 @@ class CoachMarksControllerTests: XCTestCase, CoachMarksControllerDelegate {
 
         if (delegateEndExpectation.description == "Detachment") {
             let contains =
-                isCoachMarkViewControllerAttached(self.parentController.childViewControllers)
+                isCoachMarkViewControllerAttached(self.parentController.children)
 
             XCTAssertFalse(contains)
 

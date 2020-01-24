@@ -28,9 +28,10 @@ import UIKit
 /// default one provided by the library.
 public class CoachMarkArrowDefaultView: UIImageView, CoachMarkArrowView {
     // MARK: - Initialization
+    
     public init(orientation: CoachMarkArrowOrientation) {
         let image, highlightedImage: UIImage?
-
+        
         if orientation == .top {
             image = UIImage(namedInInstructions: "arrow-top")
             highlightedImage = UIImage(namedInInstructions: "arrow-top-highlighted")
